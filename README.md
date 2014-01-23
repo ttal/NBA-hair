@@ -15,3 +15,5 @@ Plan -
 Current status - 
   Hair identification is pretty solid using contrast filtering
   
+Python reqs:
+  scipy, numpy, pandas, matplotlib, PIL
