@@ -124,51 +124,12 @@ def extend_selection(inarray, ntop, sigma=3.0, thresh=0.1):
 
     return g_smoothed
 
-def make_dict(inlist, target_names, greyscale_dir='greyscale'):
-
-    flat_img, target_coverage = np.array([]), np.array([])
-    for p, player in enumerate(inlist.name):
-        reduced_arr = combine_lum_alpha(greyscale_dir+'/'+player+'.png')
-        flat_img = np.append(flat_img, flatten_array(reduced_arr))
-        target_coverage = np.append(target_coverage, inlist.coverage[p])
-
-    flat_img = flat_img.reshape(len(inlist.name), len(flat_img)/len(inlist.name))
-    img_dict = {'data':flat_img, 'target':target_coverage, 'target_names':target_names}
-
-    return img_dict
-
-def train_nnw(training_dict):
-    from sklearn import svm#, cross_validation
-
-    clf = svm.SVC(C=1, kernel='linear')
-    clf.fit(training_dict['data'], training_dict['target'])
-
-    return clf
-
-def fit_images(clf, name_list, display_images=False):
-
-    for player in name_list['name']:
-        reduced_arr = combine_lum_alpha('greyscale/'+player+'.png')
-        print player, clf.predict(flatten_array(reduced_arr))[0]
-
-        if display_images:
-            img = Image.open('player_images/'+player+'.png')
-            plt.imshow(img); raw_input(); plt.clf()
-
-
 if __name__ == '__main__':
     #get_images()
 
     name_list = read_csv('player_names.csv')
 
     #convert_to_greyscale(name_list)
-
-    #training_list = read_csv('training_binary2.csv')
-    #training_dict = make_dict(training_list, target_names=['no', 'yes'])
-
-    #clf = train_nnw(training_dict)
-    
-    #fit_images(clf, name_list, display_images=True)
 
     for player in name_list['name']:
         print player
